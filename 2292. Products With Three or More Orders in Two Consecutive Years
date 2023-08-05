@@ -1,0 +1,20 @@
+WITH YearlyOrders AS (
+    SELECT 
+        product_id,
+        YEAR(purchase_date) AS purchase_year
+    FROM 
+        Orders
+    GROUP BY 
+        product_id, 
+        YEAR(purchase_date)
+    HAVING 
+        COUNT(order_id) >= 3
+)
+
+SELECT 
+    DISTINCT V1.product_id
+FROM 
+    YearlyOrders V1
+    INNER JOIN YearlyOrders V2 ON V1.product_id = V2.product_id
+WHERE 
+    V2.purchase_year = V1.purchase_year + 1
