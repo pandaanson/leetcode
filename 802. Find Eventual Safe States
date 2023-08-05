@@ -1,0 +1,46 @@
+#include <vector>
+#include <iostream>
+
+std::vector<int> eventualSafeNodes(std::vector<std::vector<int>>& graph) {
+    int n = graph.size();
+    std::vector<int> state(n, 0); // State of each node: 0 = unvisited, 1 = visiting, 2 = safe
+    std::vector<int> result;
+
+    // Depth First Search
+    auto dfs = [&](int node, auto& dfs) -> bool {
+        if (state[node] != 0) return state[node] == 2;
+        state[node] = 1; // Mark the node as being visited
+        for (int neighbor : graph[node]) {
+            if (state[neighbor] == 1 || !dfs(neighbor, dfs)) {
+                return false; // Cycle detected or neighbor is unsafe
+            }
+        }
+        state[node] = 2; // Mark the node as safe
+        return true;
+    };
+
+    for (int i = 0; i < n; ++i) {
+        if (dfs(i, dfs)) result.push_back(i); // If the node is safe, add it to the result
+    }
+
+    return result;
+}
+
+int main() {
+    std::vector<std::vector<int>> graph = {{1,2},{2,3},{5},{0},{5},{},{}};    
+    std::vector<int> result = eventualSafeNodes(graph);
+
+    for (int node : result) {
+        std::cout << node << ' ';
+    } // Output: 2 4 5 6
+
+    return 0;
+}
+/*This problem can be solved by utilizing Depth First Search (DFS) or Topological Sort. Here, we'll use DFS to determine the safe states.
+
+We will mark each node with one of three states:
+
+0 for an unvisited node.
+1 for a node currently being visited (in the DFS call stack).
+2 for a safe node.
+We will perform a DFS starting from each unvisited node. If we find a cycle, the current path is unsafe, and we'll return false. If we reach a terminal node or another safe node, we'll mark the current node as safe.*/
