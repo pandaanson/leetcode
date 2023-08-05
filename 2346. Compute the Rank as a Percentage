@@ -1,0 +1,21 @@
+# Write your MySQL query statement below
+SELECT 
+  student_id,
+  department_id,
+  ifnull(ROUND(
+    (student_rank - 1) * 100.0 / (total_students - 1), 
+    2
+  ) 
+  ,0) AS percentage
+FROM (
+  SELECT 
+    student_id,
+    department_id,
+    RANK() OVER (
+      PARTITION BY department_id 
+      ORDER BY mark DESC
+    ) AS student_rank,
+    COUNT(*) OVER (PARTITION BY department_id) AS total_students
+  FROM 
+    Students
+) AS SubQuery
