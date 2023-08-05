@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int left = 0, right = nums.size() - 1;
+
+    while (left < right) {
+        int mid = (left + right) / 2;
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return nums[left];
+    }
+};
+
+/*This problem requires finding the minimum element in a sorted and rotated array. Since the array is sorted but then rotated, we can take advantage of this property to solve the problem in O(log n) time using binary search.
+
+Algorithm
+Initialize Two Pointers: Start with two pointers, left and right, at the beginning and end of the array, respectively.
+Binary Search Loop: While left is less than right, perform the following:
+a. Calculate Mid: Find the middle index mid as (left + right) // 2.
+b. Compare Mid with Right: If the element at mid is greater than the element at right, it means the minimum element is to the right of mid, so update left = mid + 1.
+c. Otherwise: The minimum element is to the left or at mid, so update right = mid.
+Return Minimum: The minimum element will be at the index left.
+*/
