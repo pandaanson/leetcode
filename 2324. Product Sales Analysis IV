@@ -1,0 +1,36 @@
+# Write your MySQL query statement below
+-- Create a CTE to calculate the total spent on each product by each user
+WITH total_spending AS (
+  SELECT 
+    s.user_id, 
+    s.product_id, 
+    SUM(s.quantity * p.price) AS spent
+  FROM 
+    sales AS s 
+    JOIN product AS p ON s.product_id = p.product_id
+  GROUP BY 
+    s.user_id, 
+    s.product_id
+),
+
+-- Create a CTE to rank the products by the total spent for each user
+product_rankings AS (
+  SELECT 
+    user_id, 
+    product_id,
+    RANK() OVER (
+      PARTITION BY user_id 
+      ORDER BY spent DESC
+    ) AS rnk
+  FROM 
+    total_spending
+)
+
+-- Select the products with the highest total spent (rank = 1) for each user
+SELECT 
+  user_id, 
+  product_id
+FROM 
+  product_rankings
+WHERE 
+  rnk = 1
