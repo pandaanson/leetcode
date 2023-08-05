@@ -1,0 +1,10 @@
+# Write your MySQL query statement below
+SELECT w1.city_id, MIN(w1.day) as day, w1.degree
+FROM Weather w1
+JOIN (
+    SELECT city_id, MAX(degree) as max_degree
+    FROM Weather
+    GROUP BY city_id
+) w2 ON w1.city_id = w2.city_id AND w1.degree = w2.max_degree
+GROUP BY w1.city_id
+ORDER BY w1.city_id;
