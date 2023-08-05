@@ -1,0 +1,20 @@
+class Solution(object):
+    def maxConsecutiveAnswers(self, answerKey, k):
+        def max_length(char):
+            left = 0
+            max_len = 0
+            changes = 0
+            
+            for right in range(len(answerKey)):
+                if answerKey[right] != char:
+                    changes += 1
+                
+                while changes > k:
+                    if answerKey[left] != char:
+                        changes -= 1
+                    left += 1
+
+                max_len = max(max_len, right - left + 1)
+            
+            return max_len
+        return max(max_length('T'), max_length('F'))
