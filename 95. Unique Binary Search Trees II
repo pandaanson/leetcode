@@ -1,0 +1,40 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        if n == 0:
+            return []
+        
+        # Memoization dictionary to store the results of subproblems
+        memo = {}
+        
+        def generate_trees(start, end):
+            # If the result is already computed, return it from the memo
+            if (start, end) in memo:
+                return memo[(start, end)]
+
+            trees = []
+            if start > end:
+                trees.append(None)
+                return trees
+
+            for i in range(start, end + 1):
+                left_trees = generate_trees(start, i - 1)
+                right_trees = generate_trees(i + 1, end)
+
+                for l in left_trees:
+                    for r in right_trees:
+                        current_tree = TreeNode(i)
+                        current_tree.left = l
+                        current_tree.right = r
+                        trees.append(current_tree)
+
+            # Store the result in the memo before returning
+            memo[(start, end)] = trees
+            return trees
+
+        return generate_trees(1, n)
