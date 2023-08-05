@@ -1,0 +1,5 @@
+SELECT user_id, gender
+FROM Genders
+ORDER BY 
+    DENSE_RANK() OVER (PARTITION BY gender ORDER BY user_id ASC),
+    FIELD(gender, 'female', 'other', 'male');
