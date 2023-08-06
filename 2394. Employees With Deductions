@@ -1,0 +1,10 @@
+SELECT e.employee_id
+FROM Employees e
+LEFT JOIN (
+  SELECT employee_id,
+    SUM(TIMESTAMPDIFF(MINUTE, in_time, out_time) + 
+      CASE WHEN SECOND(out_time) > 0 THEN 1 ELSE 0 END) AS worked_minutes
+  FROM Logs
+  GROUP BY employee_id
+) l ON e.employee_id = l.employee_id
+WHERE IFNULL(l.worked_minutes, 0) < e.needed_hours * 60;
