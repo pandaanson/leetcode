@@ -1,0 +1,15 @@
+SELECT id, IF(drink IS NOT NULL, @coffee := drink, @coffee) AS drink
+FROM Coffeeshop
+
+IF(drink IS NOT NULL, @coffee := drink, @coffee):
+
+This is an IF condition that checks each drink value in every row.
+If drink is not null (drink IS NOT NULL), it assigns the value of drink to the @coffee variable (@coffee := drink).
+If drink is null, it simply uses the current value of the @coffee variable.
+@coffee := drink:
+
+This is an assignment operation in MySQL. It assigns the current drink value to the @coffee variable.
+@coffee:
+
+This is a user-defined variable in MySQL. It stores the latest non-null value of drink.
+So, for each row, if the drink value is not null, the variable @coffee gets updated with that value. If the drink value is null, the current value of @coffee (which holds the latest non-null drink value from the previous rows) is used. This effectively replaces nulls with the last observed non-null drink value.
