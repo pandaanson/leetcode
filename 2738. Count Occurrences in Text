@@ -1,0 +1,17 @@
+WITH BullBear AS (
+    SELECT file_name,
+           -- Identify occurrences of 'bull' and 'bear'
+           CASE WHEN 
+                content LIKE '% bull %' 
+           THEN 1 ELSE 0 END AS is_bull,
+           CASE WHEN 
+                content LIKE '% bear %' 
+           THEN 1 ELSE 0 END AS is_bear
+    FROM Files
+)
+
+-- Sum up the occurrences of 'bull' and 'bear'
+SELECT 'bull' AS word, SUM(is_bull) AS count FROM BullBear
+UNION ALL
+SELECT 'bear' AS word, SUM(is_bear) AS count FROM BullBear;
+--Crappy wording, ignore first word
