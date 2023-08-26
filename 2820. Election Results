@@ -1,0 +1,23 @@
+WITH VoteWeights AS (
+    SELECT 
+        voter,
+        candidate,
+        1.0 / COUNT(candidate) OVER (PARTITION BY voter) AS weight
+    FROM Votes
+    WHERE candidate IS NOT NULL
+),
+
+VoteSums AS (
+    SELECT 
+        candidate,
+        SUM(weight) AS total_votes
+    FROM VoteWeights
+    GROUP BY candidate
+)
+
+-- Use a subquery to filter candidates by the maximum vote count
+SELECT 
+    candidate
+FROM VoteSums
+WHERE total_votes = (SELECT MAX(total_votes) FROM VoteSums)
+ORDER BY candidate;
