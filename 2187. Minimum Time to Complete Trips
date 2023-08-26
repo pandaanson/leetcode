@@ -1,0 +1,27 @@
+from typing import List
+
+class Solution:
+    def minimumTime(self, time: List[int], totalTrips: int) -> int:
+        
+        def tripsByTime(t, time):
+            return sum(t // bus_time for bus_time in time)
+
+        left, right = 1, max(time) * totalTrips
+        while left < right:
+            mid = (left + right) // 2
+            if tripsByTime(mid, time) < totalTrips:
+                left = mid + 1
+            else:
+                right = mid
+        return left
+
+# Test
+sol = Solution()
+
+time1 = [1,2,3]
+totalTrips1 = 5
+print(sol.minimumTime(time1, totalTrips1))  # Output: 3
+
+time2 = [2]
+totalTrips2 = 1
+print(sol.minimumTime(time2, totalTrips2))  # Output: 2
