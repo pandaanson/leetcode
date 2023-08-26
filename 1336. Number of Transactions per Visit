@@ -1,0 +1,32 @@
+WITH TransactionSummary AS (
+    -- For each user visit, count the number of transactions they made
+    SELECT 
+        v.user_id,
+        v.visit_date,
+        COUNT(t.transaction_date) AS num_transactions
+    FROM Visits v
+    LEFT JOIN Transactions t ON v.user_id = t.user_id AND v.visit_date = t.transaction_date
+    GROUP BY v.user_id, v.visit_date
+),
+
+MaxTransactionCount AS (
+    -- Find the maximum number of transactions a user did in a visit
+    SELECT MAX(num_transactions) AS max_transactions FROM TransactionSummary
+),
+
+TransactionRange AS (
+    -- Generate a series of numbers from 0 to the maximum transaction count
+    SELECT DISTINCT 
+        (ROW_NUMBER() OVER ()) - 1 AS num_transactions
+    FROM Transactions
+    UNION SELECT 0
+)
+
+SELECT 
+    tr.num_transactions AS transactions_count,
+    COUNT(ts.user_id) AS visits_count
+FROM TransactionRange tr
+LEFT JOIN TransactionSummary ts ON tr.num_transactions = ts.num_transactions
+WHERE tr.num_transactions <= (SELECT max_transactions FROM MaxTransactionCount)
+GROUP BY tr.num_transactions
+ORDER BY tr.num_transactions;
