@@ -1,0 +1,22 @@
+WITH LatestMonths AS (
+    -- Subquery to identify the latest month each employee worked
+    SELECT id, MAX(month) AS latest_month
+    FROM Employee
+    GROUP BY id
+)
+
+SELECT 
+    e.id,
+    e.month,
+    -- Compute the 3-month cumulative salary using a window function
+    SUM(e.salary) OVER (
+        PARTITION BY e.id 
+        ORDER BY e.month 
+        RANGE BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS Salary
+FROM Employee e
+-- Exclude the latest month each employee worked
+LEFT JOIN LatestMonths lm ON e.id = lm.id AND e.month = lm.latest_month
+WHERE lm.latest_month IS NULL
+-- Order results by employee ID and then month
+ORDER BY e.id, e.month DESC;
