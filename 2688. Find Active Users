@@ -1,0 +1,9 @@
+WITH NumberedUsers AS (
+    SELECT user_id, item, created_at, ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY created_at) AS rn
+    FROM Users
+)
+
+SELECT DISTINCT u1.user_id
+FROM NumberedUsers u1
+JOIN NumberedUsers u2 ON u1.user_id = u2.user_id AND u1.rn < u2.rn
+WHERE DATEDIFF(u2.created_at, u1.created_at) BETWEEN 0 AND 7;
