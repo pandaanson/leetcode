@@ -1,0 +1,19 @@
+class Solution:
+    def findLongestChain(self, pairs: List[List[int]]) -> int:
+        # Sort the pairs based on their ending values
+        pairs.sort(key=lambda x: x[1])
+        
+        # Initialize the end of the current chain to negative infinity
+        # and the length of the longest chain to 0
+        curr_end = float('-inf')
+        longest_chain = 0
+        
+        # Iterate over the sorted pairs
+        for pair in pairs:
+            # If the start of the current pair is greater than the 
+            # end of the last pair in the chain, add it to the chain
+            if pair[0] > curr_end:
+                curr_end = pair[1]
+                longest_chain += 1
+
+        return longest_chain
