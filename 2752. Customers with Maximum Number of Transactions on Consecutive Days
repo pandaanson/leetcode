@@ -1,0 +1,30 @@
+# Write your MySQL query statement below
+-- Declare the first CTE, for identifying and grouping consecutive transaction days
+WITH RankedTransactions AS (
+    SELECT 
+        customer_id, 
+        TO_DAYS(transaction_date) - RANK() OVER (PARTITION BY customer_id ORDER BY transaction_date) AS consecutive_group
+    FROM 
+        Transactions
+),
+
+-- Declare the second CTE, for counting the number of consecutive transaction days for each customer
+ConsecutiveDayCounts AS (
+    SELECT 
+        customer_id, 
+        COUNT(consecutive_group) AS consecutive_days
+    FROM 
+        RankedTransactions
+    GROUP BY 
+        customer_id, consecutive_group
+)
+
+-- Main query to find customer_ids with the maximum number of consecutive transaction days
+SELECT 
+    customer_id
+FROM 
+    ConsecutiveDayCounts
+WHERE 
+    consecutive_days = (SELECT MAX(consecutive_days) FROM ConsecutiveDayCounts)
+ORDER BY 
+    customer_id;
