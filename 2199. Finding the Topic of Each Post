@@ -1,0 +1,23 @@
+WITH PostTopics AS (
+    SELECT 
+        P.post_id,
+        K.topic_id
+    FROM 
+        Posts P
+    JOIN 
+        Keywords K
+    ON 
+        CONCAT(' ', LOWER(P.content), ' ') LIKE CONCAT('% ', LOWER(K.word), ' %')
+    GROUP BY
+        P.post_id, K.topic_id
+)
+SELECT 
+    P.post_id,
+    COALESCE(
+        (SELECT GROUP_CONCAT(DISTINCT PT.topic_id ORDER BY PT.topic_id ASC)
+         FROM PostTopics PT
+         WHERE PT.post_id = P.post_id),
+        'Ambiguous!'
+    ) AS topic
+FROM
+    Posts P
