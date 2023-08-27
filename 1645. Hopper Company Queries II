@@ -1,0 +1,37 @@
+-- Create the months of the year for 2020
+WITH Months AS (
+  SELECT 1 AS month UNION ALL
+  SELECT 2 UNION ALL
+  SELECT 3 UNION ALL
+  SELECT 4 UNION ALL
+  SELECT 5 UNION ALL
+  SELECT 6 UNION ALL
+  SELECT 7 UNION ALL
+  SELECT 8 UNION ALL
+  SELECT 9 UNION ALL
+  SELECT 10 UNION ALL
+  SELECT 11 UNION ALL
+  SELECT 12
+),
+-- Calculate active drivers for each month
+ActiveDrivers AS (
+  SELECT m.month, COUNT(d.driver_id) AS active_drivers
+  FROM Months m
+  LEFT JOIN Drivers d
+  ON YEAR(d.join_date) < 2020 OR (YEAR(d.join_date) = 2020 AND MONTH(d.join_date) <= m.month)
+  GROUP BY m.month
+),
+-- Calculate working drivers for each month
+WorkingDrivers AS (
+  SELECT MONTH(r.requested_at) AS month, COUNT(DISTINCT ar.driver_id) AS working_drivers
+  FROM AcceptedRides ar
+  JOIN Rides r ON ar.ride_id = r.ride_id
+  WHERE YEAR(r.requested_at) = 2020
+  GROUP BY MONTH(r.requested_at)
+)
+-- Calculate working percentage
+SELECT ad.month, 
+       ROUND(COALESCE(100.0 * wd.working_drivers / NULLIF(ad.active_drivers, 0), 0), 2) AS working_percentage
+FROM ActiveDrivers ad
+LEFT JOIN WorkingDrivers wd ON ad.month = wd.month
+ORDER BY ad.month;
