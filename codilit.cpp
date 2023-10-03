@@ -49,3 +49,71 @@ int main() {
     cout << solution(32) << endl;   // Should return 0
     return 0;
 }
+// you can use includes, for example:
+// #include <algorithm>
+
+// you can write to stdout for debugging purposes, e.g.
+// cout << "this is a debug message" << endl;
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Summary of Problem:
+// Given an array A consisting of N integers, the goal is to rotate the array K times.
+// Rotation means each element is shifted right by one index, and the last element moves to the first place.
+// Write a function that returns the rotated array A after K rotations.
+// N and K are integers within the range [0..100].
+// Each element of array A is an integer within the range [-1,000..1,000].
+
+
+vector<int> solution(vector<int> &A, int K) {
+
+    
+    // Initialize an empty vector to store the rotated array
+    vector<int> rotatedArray(A.size());
+    
+    // Get the size of the array for use in modulo operation and loop
+    int N = A.size();
+    
+    // Edge case: Check if the array is empty or has only one element
+    if (N <= 1) return A;
+
+    // Perform rotation
+    for (int i = 0; i < N; ++i) {
+        // Calculate the new index after rotation
+        int newIndex = (i + K) % N;
+        
+        // Assign the rotated value to the new index
+        rotatedArray[newIndex] = A[i];
+    }
+
+    return rotatedArray;
+}
+
+
+int main() {
+    vector<int> A1 = {3, 8, 9, 7, 6};
+    vector<int> R1 = solution(A1, 3);
+    for (auto& num : R1) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> A2 = {0, 0, 0};
+    vector<int> R2 = solution(A2, 1);
+    for (auto& num : R2) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    vector<int> A3 = {1, 2, 3, 4};
+    vector<int> R3 = solution(A3, 4);
+    for (auto& num : R3) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
