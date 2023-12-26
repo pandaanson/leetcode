@@ -1,0 +1,16 @@
+class Solution:
+    def maxNonDecreasingLength(self, nums1, nums2):
+        l = len(nums1)
+        dp1, dp2 = [1] * l, [1] * l
+
+        for i in range(1, l):
+            # Extend subarray with nums1[i] if possible
+            dp1[i] = dp1[i-1] + 1 if nums1[i] >= nums1[i-1] else 1
+            dp1[i] = max(dp1[i], dp2[i-1] + 1) if nums1[i] >= nums2[i-1] else dp1[i]
+
+            # Extend subarray with nums2[i] if possible
+            dp2[i] = dp2[i-1] + 1 if nums2[i] >= nums2[i-1] else 1
+            dp2[i] = max(dp2[i], dp1[i-1] + 1) if nums2[i] >= nums1[i-1] else dp2[i]
+
+        return max(max(dp1), max(dp2))
+        
