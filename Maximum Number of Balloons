@@ -1,0 +1,14 @@
+class Solution:
+    def maxNumberOfBalloons(self, text: str) -> int:
+        # Characters in 'balloon'
+        balloon_chars = ['b', 'a', 'l', 'l', 'o', 'o', 'n']
+
+        # Create a frequency map of the characters in the string
+        frequency_map = {char: text.count(char) for char in balloon_chars}
+
+        # Count of 'l' and 'o' should be halved as they occur twice in 'balloon'
+        frequency_map['l'] //= 2
+        frequency_map['o'] //= 2
+
+        # Return the minimum value in the frequency map
+        return min(frequency_map.values())
