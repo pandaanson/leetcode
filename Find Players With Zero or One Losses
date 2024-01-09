@@ -1,0 +1,23 @@
+class Solution:
+    def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
+        dictans={}
+
+        for winner, loser in matches:
+            if winner not in dictans.keys():dictans[winner]=0
+            if loser not in dictans.keys():
+                dictans[loser]=1
+            else:
+                dictans[loser]+=1
+                
+            
+
+        zero_lose, one_lose = [], []
+        for player in dictans.keys():
+            count = dictans[player]
+            if count == 0:
+                zero_lose.append(player)
+
+            elif count == 1:
+               one_lose.append(player) 
+
+        return [sorted(zero_lose), sorted(one_lose)]
