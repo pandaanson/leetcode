@@ -1,0 +1,14 @@
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        ls=len(nums)
+        ans,start,end=[0]*ls,0,ls-1
+        for i in range(ls-1,-1,-1):
+            startsquare,endsquare=nums[start]**2,nums[end]**2
+            if startsquare>endsquare:
+                ans[i],start=startsquare,start+1
+            else:
+                ans[i],end=endsquare,end-1
+        return ans
+                
+                
+                
