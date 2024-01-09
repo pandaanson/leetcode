@@ -1,0 +1,7 @@
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        temp=ans=1
+        for i in range(len(nums)):
+            temp-=nums[i]
+            ans=max(ans,temp)
+        return ans
