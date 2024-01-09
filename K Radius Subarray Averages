@@ -1,0 +1,21 @@
+class Solution:
+    def getAverages(self, nums: List[int], k: int) -> List[int]:
+        if k==0:
+            return nums
+
+        n=len(nums)
+        ans=[-1] * n
+        tempans=[float(-1)] * n
+        temp=0
+        if n<2*k+1:
+            return ans
+        tempans[k]=0
+        for i in range(2*k+1):
+            tempans[k]+=nums[i]
+        for i in range(k+1,n-k):
+            tempans[i] = tempans[i-1]+(nums[i+k]-nums[i-k-1])
+        for i in range(n):
+            ans[i]=int(tempans[i]//(2*k+1))
+        return ans
+
+        
