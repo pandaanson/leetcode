@@ -1,0 +1,14 @@
+class Solution:
+    def destCity(self, paths: List[List[str]]) -> str:
+        check = {}
+
+        for path in paths:
+            check[path[0]] = "out"
+            if path[1] not in check:
+                check[path[1]] = "in"
+
+        for item in check:
+            if check[item] == "in":
+                return item
+
+        return ""
