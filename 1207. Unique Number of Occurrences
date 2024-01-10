@@ -1,0 +1,11 @@
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        count=Counter(arr)
+        sets=set()
+        for i in count:
+            if count[i] in sets:
+                return False
+            else:
+                sets.add(count[i])
+        return True
+        
