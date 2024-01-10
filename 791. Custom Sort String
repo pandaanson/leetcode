@@ -1,0 +1,18 @@
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        dicts=dict()
+        sets=set()
+        for i in s:
+            if i in sets:
+                dicts[i]+=1
+            else:
+                sets.add(i)
+                dicts[i]=1
+        ans=""
+        for i in order:
+            if i in sets:
+                sets.remove(i)
+                ans+=i*dicts[i]
+        for i in sets:
+            ans+=i*dicts[i]
+        return ans
