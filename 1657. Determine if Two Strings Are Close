@@ -1,0 +1,24 @@
+class Solution:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        dict11={}
+        dict12={}
+        set1=set()
+        set2=set()
+        dict21={}
+        dict22={}
+
+        for i in word1:
+            getter=dict11.get(i,0)
+            dict11[i]=getter+1
+            set1.add(i)
+        for i in dict11:
+            getter=dict12.get(dict11[i],0)
+            dict12[dict11[i]]=getter+1
+        for i in word2:
+            getter=dict21.get(i,0)
+            dict21[i]=getter+1
+            set2.add(i)
+        for i in dict21:
+            getter=dict22.get(dict21[i],0)
+            dict22[dict21[i]]=getter+1
+        return dict12==dict22 and set1==set2
