@@ -1,0 +1,18 @@
+class Solution:
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        count = 0
+        current_sum = 0
+        prefix_sum_counts = {0: 1}
+
+        for num in nums:
+            current_sum += num
+
+            # If the difference (current_sum - goal) is in prefix_sum_counts,
+            # it means there is a valid subarray ending at the current position.
+            if current_sum - goal in prefix_sum_counts:
+                count += prefix_sum_counts[current_sum - goal]
+
+            # Update the count of the current sum in the prefix_sum_counts dictionary.
+            prefix_sum_counts[current_sum] = prefix_sum_counts.get(current_sum, 0) + 1
+
+        return count
