@@ -1,0 +1,20 @@
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+
+        char_map = {}
+        mapped_chars = set()
+
+        for char_s, char_t in zip(s, t):
+            if char_s not in char_map:
+                # Check if char_t is already mapped to another character
+                if char_t in mapped_chars:
+                    return False
+                char_map[char_s] = char_t
+                mapped_chars.add(char_t)
+            elif char_map[char_s] != char_t:
+                # Existing mapping does not match the current character in t
+                return False
+
+        return True
