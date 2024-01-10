@@ -1,0 +1,18 @@
+class Solution:
+    def findMaxLength(self, nums: List[int]) -> int:
+        temp,position=0,0
+        dict={0:-1}
+        ans=0
+        
+        for i in nums:
+            if i==0:
+                temp+=-1
+            else:
+                temp+=1
+            if temp not in dict.keys():
+                dict[temp]=position
+            else:
+                ans=max(ans,position-dict[temp])
+            position+=1
+        return ans
+                
