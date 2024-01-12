@@ -1,0 +1,46 @@
+"""
+Question Rephrased:
+Implement a First In First Out (FIFO) queue using a single linked list. The queue should support the standard operations of a regular queue: push (to enqueue), pop (to dequeue), peek (to view the front element), and check if empty.
+ 
+Class Implementation:
+MyQueue class should be implemented with the following methods:
+- push(int x): Appends element x to the rear of the queue.
+- pop(): Removes and returns the element from the front of the queue.
+- peek(): Retrieves the element at the front of the queue without removing it.
+- empty(): Checks whether the queue is empty and returns a boolean value.
+ 
+Note: Standard queue operations must be followed, and the linked list should be utilized to simulate the queue behavior.
+"""
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+class MyQueue:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def push(self, x):
+        new_node = Node(x)
+        if self.tail:
+            self.tail.next = new_node
+        self.tail = new_node
+        if not self.head:
+            self.head = new_node
+
+    def pop(self):
+        if not self.head:
+            return None
+        value = self.head.value
+        self.head = self.head.next
+        if not self.head:
+            self.tail = None
+        return value
+
+    def peek(self):
+        return self.head.value if self.head else None
+
+    def empty(self):
+        return self.head is None
