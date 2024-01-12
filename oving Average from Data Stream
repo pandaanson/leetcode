@@ -1,0 +1,27 @@
+
+class MovingAverage:
+
+    def __init__(self, size: int):
+        from collections import deque
+
+        self.totalsize=size
+        self.currentsize=0
+        self.queue = deque()
+        self.currentaver=0
+        
+
+    def next(self, val: int) -> float:
+        self.currentsize+=1
+        self.queue.append(val)
+        if self.currentsize>self.totalsize:
+            temp=self.queue.popleft()
+            self.currentsize-=1
+            self.currentaver=self.currentaver+((val-temp)/self.currentsize)
+        elif self.currentsize==1:
+            self.currentaver+=val
+        else:
+            self.currentaver=(self.currentaver*(self.currentsize-1)+val)/self.currentsize
+        return self.currentaver
+        
+            
+        
