@@ -1,0 +1,29 @@
+class Solution:
+    def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
+        """
+        Rephrased Problem:
+        Determine the most competitive subsequence of a given length 'k' from an array 'nums'. 
+        A subsequence is deemed more competitive if, at the first differing position, 
+        it has a lower value compared to another subsequence of the same length.
+
+        Solution with Inline Explanation:
+        """
+        stack = []  # Initialize an empty stack to store the most competitive subsequence
+
+        # Iterate over each element in the nums array
+        for i in range(len(nums)):
+            # If the current element of nums is smaller than the last element in the stack,
+            # and the remaining elements in nums are sufficient to form a subsequence of size k,
+            # then pop the last element from the stack.
+            while stack and stack[-1] > nums[i] and len(nums) - i > k - len(stack):
+                stack.pop()
+
+            # Append the current element of nums to the stack.
+            stack.append(nums[i])
+
+        # Return the first k elements of the stack, which form the most competitive subsequence.
+        return stack[:k]
+
+# Example usage
+sol = Solution()
+print(sol.mostCompetitive([3, 5, 2, 6], 2))  # Output: [2, 6]
