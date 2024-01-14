@@ -1,0 +1,11 @@
+class Solution:
+    def findJudge(self, n: int, trust: List[List[int]]) -> int:
+        judges_can=set([i for i in range(1,n+1)])
+        get_trust=[0 for i in range(n+1)]
+        for truster,trustee in trust:
+            judges_can.discard(truster)
+            get_trust[trustee]+=1
+        for i in judges_can:
+            if get_trust[i]==n-1:
+                return i
+        return -1
