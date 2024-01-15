@@ -1,0 +1,38 @@
+from collections import deque
+
+class Solution:
+    def numEnclaves(self, grid: List[List[int]]) -> int:
+        rows, cols = len(grid), len(grid[0])
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+
+        def is_on_boundary(x, y):
+            return x == 0 or y == 0 or x == cols - 1 or y == rows - 1
+
+        def bfs(x, y):
+            queue = deque([(x, y)])
+            is_enclave = True
+            land_count = 0
+
+            while queue:
+                cx, cy = queue.popleft()
+                if grid[cy][cx] == 0:
+                    continue
+                grid[cy][cx] = 0  # Mark as visited by setting to sea
+                land_count += 1
+                if is_on_boundary(cx, cy):
+                    is_enclave = False
+
+                for dx, dy in directions:
+                    nx, ny = cx + dx, cy + dy
+                    if 0 <= nx < cols and 0 <= ny < rows and grid[ny][nx] == 1:
+                        queue.append((nx, ny))
+
+            return land_count if is_enclave else 0
+
+        count = 0
+        for y in range(rows):
+            for x in range(cols):
+                if grid[y][x] == 1:
+                    count += bfs(x, y)
+
+        return count
