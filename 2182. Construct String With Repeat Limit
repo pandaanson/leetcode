@@ -1,0 +1,43 @@
+
+ class Solution:
+    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        # Count the frequency of each character in the string
+        char_freq = Counter(s).items()
+
+        # Create a max-heap based on the negative ASCII values of characters
+        max_heap = [(-ord(char), freq) for char, freq in char_freq]
+        heapify(max_heap)
+
+        result = []  # List to store the result
+
+        while max_heap:
+            char_ascii, freq = heappop(max_heap)  # Get the character with the highest ASCII value and its frequency
+            char = chr(-char_ascii)  # Convert ASCII to character
+
+            # Check if the last character in result is same as current character
+            if result and result[-1] == char:
+                if not max_heap:  # Break if there are no other characters to use
+                    break
+
+                # Get the next highest character
+                next_char_ascii, next_freq = heappop(max_heap)
+                next_char = chr(-next_char_ascii)
+
+                result.append(next_char)  # Add the next highest character to result
+
+                # Update the frequency and push it back if there are more occurrences
+                if next_freq - 1:
+                    heappush(max_heap, (next_char_ascii, next_freq - 1))
+
+                # Push the current character back into the heap
+                heappush(max_heap, (char_ascii, freq))
+            else:
+                # Add current character up to repeatLimit times
+                num_to_add = min(freq, repeatLimit)
+                result.extend([char] * num_to_add)
+
+                # Update the frequency and push it back if there are more occurrences
+                if freq - num_to_add:
+                    heappush(max_heap, (char_ascii, freq - num_to_add))
+
+        return "".join(result)  # Convert the list to string and return
