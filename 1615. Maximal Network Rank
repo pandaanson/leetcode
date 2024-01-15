@@ -1,0 +1,16 @@
+class Solution:
+    def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+        number_of_road_to_city=[0 for i in range(n)]
+        ans=0
+        connection=set()
+        for city1,city2 in roads:
+            number_of_road_to_city[city1]+=1
+            number_of_road_to_city[city2]+=1
+            connection.add(str(min(city1,city2))+','+str(max(city1,city2)))
+        for i in range(n):
+            for j in range(i+1,n):
+                if str(i)+','+str(j) in connection:
+                    ans=max(ans,number_of_road_to_city[i]+number_of_road_to_city[j]-1)
+                else:
+                    ans=max(ans,number_of_road_to_city[i]+number_of_road_to_city[j])
+        return ans
