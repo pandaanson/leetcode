@@ -1,0 +1,9 @@
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        used = set()
+        for letter in s:
+            if letter not in used:
+                used.add(letter)
+            else:
+                used.remove(letter)
+        return min(len(s) - len(used) + 1,len(s))
