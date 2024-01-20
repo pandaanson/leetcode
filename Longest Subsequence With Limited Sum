@@ -1,0 +1,24 @@
+class Solution:
+    def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+        def binarysearch(nums, target):
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] == target:
+                    return mid + 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            return left if left == 0 or nums[left - 1] <= target else left - 1
+
+        # Sort nums and compute prefix sums
+        nums.sort()
+        for i in range(1, len(nums)):
+            nums[i] += nums[i - 1]
+
+        # Answer each query with the modified binary search
+        ans = []
+        for query in queries:
+            ans.append(binarysearch(nums, query))
+        return ans
