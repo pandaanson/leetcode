@@ -1,0 +1,26 @@
+class Solution:
+    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
+        from collections import defaultdict
+
+
+        # Accumulate planting times for seeds with the same growth time
+        dic = defaultdict(lambda: 0)
+        for plant, grow in zip(plantTime, growTime):
+            dic[grow] += plant
+        
+        # Sort the dictionary in reverse order of growth time
+        dic = dict(sorted(dic.items(), reverse=True))
+        
+        # Initialize variables for cumulative planting time and earliest blooming day
+        l = 0  # Cumulative planting time
+        r = 0  # Earliest blooming day
+        
+        # Iterate over each growth time and corresponding total planting time
+        for grow, plsum in dic.items():
+            l += plsum  # Add total planting time to cumulative planting time
+            r = max(r, l + grow)  # Update the earliest blooming day
+        
+        # Return the earliest possible day where all seeds are blooming
+        return r
+
+        
