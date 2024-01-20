@@ -1,0 +1,37 @@
+class Solution:
+    def minTaps(self, n: int, ranges: List[int]) -> int:
+        # Initialize a list to store the farthest watering point from each position
+        max_reach = [0] * (n + 1)
+
+        # Determine the farthest reach of each tap
+        for position, radius in enumerate(ranges):
+            # Calculate the leftmost point the tap can water
+            left_limit = max(0, position - radius)
+            # Calculate the rightmost point the tap can water
+            right_limit = min(n, position + radius)
+
+            # Update the maximum reach from the leftmost point
+            max_reach[left_limit] = max(max_reach[left_limit], right_limit)
+        
+        # Initialize counters for the number of taps used and current reach
+        taps_used = 0
+        current_max_reach = 0
+        next_max_reach = 0
+
+        # Traverse through each position in the garden
+        for position in range(n + 1):
+            if position > next_max_reach:
+                # If the current position is unreachable, return -1
+                return -1
+
+            if position > current_max_reach:
+                # Open a new tap when the current reach is exceeded
+                taps_used += 1
+                # Update the current reach to the next maximum reach
+                current_max_reach = next_max_reach
+
+            # Update the next maximum reach based on the taps' range
+            next_max_reach = max(next_max_reach, max_reach[position])
+
+        # Return the total number of taps used to cover the garden
+        return taps_used
