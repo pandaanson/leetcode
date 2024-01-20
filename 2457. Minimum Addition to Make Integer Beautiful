@@ -1,0 +1,23 @@
+class Solution:
+    def makeIntegerBeautiful(self, n: int, target: int) -> int:
+        def digit_sum(number):
+            return sum(map(int, str(number)))
+
+        current_sum = digit_sum(n)
+        if current_sum <= target:
+            return 0
+
+        x = 0
+        digit_place = 1
+        while current_sum > target:
+            current_digit = (n // digit_place) % 10
+            increment = (10 - current_digit) % 10
+            if digit_sum(n + increment * digit_place) <= target:
+                x += increment * digit_place
+                break
+            n += increment * digit_place
+            x += increment * digit_place
+            current_sum = digit_sum(n)
+            digit_place *= 10
+        
+        return x
