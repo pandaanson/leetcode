@@ -1,0 +1,19 @@
+class Solution:
+    def videoStitching(self, clips: List[List[int]], T: int) -> int:
+        now=0
+        temp=1
+        ans=0
+        clips.sort(key=lambda num: num[0])
+        while now<T:
+            if temp==now:return -1
+            temp=now
+            current=now
+
+            for clip in clips:
+                if clip[0]>now:
+                    break
+                else:
+                    current=max(current,clip[1])
+            now=current
+            ans+=1
+        return ans
