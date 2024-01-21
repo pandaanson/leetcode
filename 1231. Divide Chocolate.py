@@ -2,11 +2,29 @@ class Solution:
     def maximizeSweetness(self, sweetness, K: int) -> int:
         """
         Problem Statement:
-        You have one chocolate bar that consists of some chunks, each with its own sweetness level given by the array 'sweetness'.
-        You want to share the chocolate with your K friends, so you start cutting the chocolate bar into K + 1 pieces using K cuts.
-        Each piece consists of some consecutive chunks. Being generous, you will eat the piece with the minimum total sweetness
-        and give the other pieces to your friends. The goal is to find the maximum total sweetness of the piece you can get
-        by cutting the chocolate bar optimally.
+        clarify the problem with an example. The goal is to cut a chocolate bar, represented as an array of chunks with varying levels of sweetness, into k + 1 pieces such that:
+
+Each piece consists of one or more consecutive chunks.
+You will eat the piece with the least total sweetness (being generous to your friends).
+The aim is to maximize the sweetness of the piece you eat, under the constraint that it must have the least sweetness among all pieces.
+Let's consider an example to illustrate this:
+
+Example:
+
+Suppose the sweetness levels of the chocolate chunks are given by the array sweetness = [1, 2, 3, 4, 5, 6, 7, 8, 9].
+You want to share the chocolate with k = 2 friends (meaning you need to make k + 1 = 3 pieces in total).
+Goal:
+
+Find the way to cut the chocolate such that the piece you choose for yourself has the maximum possible sweetness, but is still the least sweet among the three pieces.
+Approach:
+
+One way to cut the chocolate is into [1, 2, 3, 4], [5, 6], and [7, 8, 9]. The total sweetness of these pieces are 10, 11, and 24, respectively. If you choose the first piece [1, 2, 3, 4], your piece's sweetness is 10.
+Another way could be [1, 2, 3], [4, 5, 6], and [7, 8, 9]. The total sweetness of these pieces are 6, 15, and 24, respectively. Here, you would choose the first piece [1, 2, 3], with sweetness 6.
+Optimal Solution:
+
+The goal is to maximize the sweetness of your piece while ensuring it's the least sweet. In the examples above, the first way of cutting gives you a piece with sweetness 10, which is higher than 6 in the second method. Thus, the first method is better in this scenario.
+The problem asks to find the optimal way of cutting to achieve the maximum sweetness for your piece, under these constraints.
+In summary, the problem is about balancing the generosity of giving sweeter pieces to friends while still maximizing the sweetness of the piece you get, within the given constraints.
         """
 
         # Initialize binary search bounds
