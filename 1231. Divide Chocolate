@@ -1,0 +1,47 @@
+class Solution:
+    def maximizeSweetness(self, sweetness, K: int) -> int:
+        """
+        Problem Statement:
+        Given an array 'sweetness' representing the sweetness of each chunk of a chocolate bar,
+        and an integer 'K' representing the number of friends you have, find the maximum total sweetness
+        of the piece you can get by cutting the chocolate bar into 'K + 1' pieces (each piece consists of
+        some consecutive chunks). You will eat the piece with the minimum total sweetness, being generous
+        to your friends.
+
+        Example:
+        Input: sweetness = [1,2,3,4,5,6,7,8,9], k = 5
+        Output: 6
+        Explanation: The chocolate can be divided into pieces [1,2,3], [4,5], [6], [7], [8], [9].
+                     The piece you eat has sweetness 6.
+
+        Solution Explanation:
+        The solution uses binary search to find the optimal cutting strategy that maximizes the sweetness
+        of your piece.
+        """
+
+        # Initialize the search range for binary search
+        low = 1  # Minimum possible sweetness per piece
+        high = sum(sweetness) // (K + 1)  # Maximum possible average sweetness per piece
+
+        # Perform binary search to find the maximum sweetness you can get
+        while low < high:
+            mid = (low + high + 1) // 2  # Middle of the search range
+            cuts = 0  # Number of cuts made
+            chunk_sweetness = 0  # Sweetness of the current piece
+
+            # Iterate through the chocolate chunks
+            for piece in sweetness:
+                chunk_sweetness += piece  # Add sweetness of the current chunk
+                # Make a cut if the current piece's sweetness reaches or exceeds 'mid'
+                if chunk_sweetness >= mid:
+                    cuts += 1
+                    chunk_sweetness = 0  # Reset sweetness for the next piece
+
+            # Adjust binary search range based on the number of cuts
+            if cuts > K:  # If more cuts than needed, increase the target sweetness
+                low = mid
+            else:  # If fewer or equal cuts, decrease the target sweetness
+                high = mid - 1
+
+        # Return the maximum possible sweetness for your piece
+        return low
