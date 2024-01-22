@@ -1,0 +1,21 @@
+
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        permutations = []
+        counter = Counter(nums)
+        unique_nums = list(counter.keys())  # List of unique numbers
+
+        def findAllPermutations(res):
+            if len(res) == len(nums):
+                permutations.append(res)
+                return 
+            
+            for key in unique_nums:
+                if counter[key] > 0:
+                    counter[key] -= 1  # Decrement the count of the current number
+                    findAllPermutations(res + [key])
+                    counter[key] += 1  # Restore the count for backtracking
+
+        findAllPermutations([])
+        return permutations
